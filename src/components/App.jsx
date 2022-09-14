@@ -1,23 +1,19 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { SearchBar, ImageGallery } from 'components';
 
-export class App extends Component {
-  state = {
-    query: '',
-  };
-  handleFormSubmit = newQuery => {
-    this.setState({
-      query: newQuery,
 
-    });
+export const App = () => {
+  const [query, setQuery] = useState('');
+
+  const handleFormSubmit = newQuery => {
+      setQuery(newQuery);
   };
-  render() {
-    const { query} = this.state;
+
     return (
       <div className="app">
-        <SearchBar onFormSubmit={this.handleFormSubmit} />
+        <SearchBar onFormSubmit={handleFormSubmit} />
         <ImageGallery query={query}  />
         <ToastContainer
           position="top-right"
@@ -32,5 +28,5 @@ export class App extends Component {
         />
       </div>
     );
-  }
 }
+
