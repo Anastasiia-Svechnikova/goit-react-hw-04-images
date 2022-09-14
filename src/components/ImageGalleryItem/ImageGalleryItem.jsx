@@ -1,29 +1,22 @@
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import { useState } from 'react';
 import s from './ImageGalleryItem.module.css';
 import { Modal } from 'components';
 
-export class ImageGalleryItem extends Component {
-  state = {
-    showModal: false,
+
+export const ImageGalleryItem = ({ image, tags, largeImage }) => {
+  const [showModal, setShowModal] = useState(false)
+
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
-  handleCloseModal = () => {
-    this.setState({
-      showModal: false,
-    });
-  };
-  handleOpenModal = () => {
-    this.setState({
-      showModal: true,
-    });
+  const handleOpenModal = () => {
+  setShowModal(true);
   };
 
-  render() {
-    const { image, tags, largeImage } = this.props;
-    const { showModal } = this.state;
     return (
       <>
-        <li className={s.item} onClick={this.handleOpenModal}>
+        <li className={s.item} onClick={handleOpenModal}>
           <img
             className={s.image}
             src={image}
@@ -31,14 +24,14 @@ export class ImageGalleryItem extends Component {
           />
         </li>
         {showModal && (
-          <Modal onClose={this.handleCloseModal}>
+          <Modal onClose={handleCloseModal}>
             <img src={largeImage} alt={tags}/>
           </Modal>
         )}
       </>
     );
   }
-}
+
 
 ImageGalleryItem.propTypes = {
   image: PropTypes.string.isRequired,
