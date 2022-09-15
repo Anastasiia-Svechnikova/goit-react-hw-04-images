@@ -1,12 +1,28 @@
 import PropTypes from 'prop-types';
 import s from './ImageGallery.module.css';
+import { useRef, useEffect } from 'react';
 import { ImageGalleryItem, Loader, TextButton } from 'components';
 
 export const ImageGallery = ({images, status, isLoadBtnShown, onLoadMore}) => {
-  
+    const bottom = useRef(null);
+
+  useEffect(() => {
+    if (images.length > 20) {
+      setTimeout(() => {
+        window.scrollTo({
+          top: bottom.current.clientHeight,
+          behavior: 'smooth'
+        });
+      }, 400)
+    
+    }
+  }, [images])
+
+
+
   return (
     <>
-      <ul className={s.gallery}>
+      <ul ref={bottom} className={s.gallery}>
         {images.map(({ id, tags, webformatURL, largeImageURL}) => (
           <ImageGalleryItem
             key={id}
@@ -15,7 +31,9 @@ export const ImageGallery = ({images, status, isLoadBtnShown, onLoadMore}) => {
             largeImage={largeImageURL}
           />
         ))}
+
       </ul>
+
       {status === 'pending' && <Loader />}
       {(status === 'resolved' && isLoadBtnShown) && <TextButton onClick={onLoadMore} />}        
     </>

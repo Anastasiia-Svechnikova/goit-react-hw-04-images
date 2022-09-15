@@ -13,7 +13,7 @@ export const App = () => {
   const [status, setStatus] = useState('idle');
   const [isLoadBtnShown, setIsLoadBtnShown] = useState(true);
  
-  
+
   useEffect(() => {
     if (query) {
       setStatus('pending');
@@ -27,6 +27,7 @@ export const App = () => {
         }
         const canLoadMoreImages = res.totalHits > IMAGES_PER_PAGE && ((res.totalHits / page) > IMAGES_PER_PAGE);
         setStatus('resolved');
+       
         setImages(prevState => (page === 1 ? res.hits : [...prevState, ...res.hits]));
         setIsLoadBtnShown(canLoadMoreImages)
        
@@ -34,26 +35,28 @@ export const App = () => {
         setStatus('rejected'))
 
     }
-    }, [page, query])
- 
+  }, [page, query])
   
 
   const handleFormSubmit = newQuery => {
     setQuery(newQuery);
     setPage(1);
+    
     setImages([]);
   };
-
-   const handleLoadMore = () => {
+  
+  const handleLoadMore = () => {
     setPage(prevState => 
       prevState + 1)
+
   };
 
 
     return (
-      <div className="app">
+      <div  className="app">
         <SearchBar onFormSubmit={handleFormSubmit} />
-        <ImageGallery images={images} status={status} isLoadBtnShown={isLoadBtnShown} onLoadMore={ handleLoadMore} /> 
+        <ImageGallery images={images} status={status} isLoadBtnShown={isLoadBtnShown} onLoadMore={handleLoadMore} /> 
+       
         <ToastContainer
           position="top-right"
           theme="colored"
